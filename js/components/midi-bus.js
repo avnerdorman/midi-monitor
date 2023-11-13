@@ -1,12 +1,15 @@
 
 import router from "./router.js"
+import TwelveToneInput from './TwelveToneInput.js';
 
 export default {
   components: {
-    router
+    router,
+    TwelveToneInput
   },
   template:`
     <div class="midi-bus">
+    <twelve-tone-input @update-row="handleRowUpdate"></twelve-tone-input>
 
       <div class="bar">
 
@@ -58,7 +61,8 @@ export default {
         outputs:WebMidi.outputs
       },
       activeOutputs:{},
-      selected:WebMidi.inputs[0]||null
+      selected: WebMidi.inputs[0] || null
+      twelveToneRow: [2, 0, 3, 7, 1, 8, 9, 11, 10, 6, 4, 5], // Default row
     }
   },
   watch: {
@@ -114,6 +118,7 @@ export default {
     noteInOn(ev) {
       this.inNote=ev;
       let note = this.makeNote(ev)
+      note.number = this.mapNoteToRow(note.number, this.twelveToneRow); // Map the note
       this.$midiBus.$emit('noteinon'+note.channel,note);
       this.checkChannel(ev.channel);
       this.$set(this.channels[ev.channel].notes, note.nameOct, note)
@@ -147,6 +152,14 @@ export default {
       input.addListener('noteoff', "all", this.noteInOff);
       input.addListener('controlchange', "all", this.ccInChange);
   //    input.addListener('stop', 'all', this.reset)
+    },
+    mapNoteToRow(noteNumber, twelveToneRow) {
+      const index = noteNumber % 12;
+      const mappedNote = twelveToneRow[index];
+      return mappedNote + Math.floor(noteNumber / 12) * 12;
+    },
+    handleRowUpdate(newRow) {
+     this.twelveToneRow = newRow;
     }
   },
   created() {
@@ -158,5 +171,5 @@ export default {
     this.midi.inputs.forEach(input => {
       input.removeListener();
     })
-  }
+  },  
 }
