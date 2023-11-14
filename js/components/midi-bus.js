@@ -148,6 +148,7 @@ export default {
       note.nameOct = noteNumberToNameOct(note.number);
       console.log(note.nameOct);
       this.$midiBus.$emit('noteinon' + note.channel, note);
+      console.log('noteinon' + note.channel, note);
       this.checkChannel(ev.channel);
       this.$set(this.channels[ev.channel].notes, note.nameOct, note);
       this.$emit('update:channels', this.channels);
