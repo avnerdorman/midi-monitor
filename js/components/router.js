@@ -120,7 +120,7 @@ export default {
 
           input.on('midimessage','all', (event) => {
             if (event.data==248) {return}
-
+            console.log('MIDI message sent:', event.data);
             link.outputs.forEach(output => {
               output._midiOutput.send(event.data,event.timestamp)
             })
