@@ -2,6 +2,13 @@
 import router from "./router.js"
 import TwelveToneInput from './TwelveToneInput.js';
 
+function noteNumberToNameOct(noteNumber) {
+  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const name = notes[noteNumber % 12];
+  const octave = Math.floor(noteNumber / 12) - 1; // MIDI note 0 is C-1
+  return name + octave;
+}
+
 export default {
   components: {
     router,
@@ -138,6 +145,7 @@ export default {
     noteInOn(ev) {
       ev.note.number = this.mapNoteToRow(ev.note.number, this.twelveToneRow); // Map the note first
       let note = this.makeNote(ev);
+      note.nameOct = noteNumberToNameOct(note.number);
       console.log(note.number);
       this.$midiBus.$emit('noteinon' + note.channel, note);
       this.checkChannel(ev.channel);
