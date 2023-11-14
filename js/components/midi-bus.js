@@ -156,7 +156,7 @@ export default {
     noteInOff(ev) {
       ev.note.number = this.mapNoteToRow(ev.note.number, this.twelveToneRow); // Map the note first
       let note = this.makeNote(ev);
-      note.nameOct = noteNumberToNameOct(note.number);
+      let nameOct = note.nameOct;
       let ch = ev.channel;
       this.$midiBus.$emit('noteinoff' + note.channel, note);
       if (this.channels[ch] && this.channels[ch].notes && this.channels[ch].notes[nameOct]) {
