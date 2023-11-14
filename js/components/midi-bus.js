@@ -115,26 +115,48 @@ export default {
       note.digit = (note.number+3)%12;
       return note
     },
+    // noteInOn(ev) {
+    //   this.inNote=ev;
+    //   let note = this.makeNote(ev)
+    //   note.number = this.mapNoteToRow(note.number, this.twelveToneRow); // Map the note
+    //   console.log(note.number);
+    //   this.$midiBus.$emit('noteinon' + note.channel, note);
+    //   this.checkChannel(ev.channel);
+    //   this.$set(this.channels[ev.channel].notes, note.nameOct, note)
+    //   this.$emit('update:channels', this.channels)
+    // },
+    // noteInOff(ev) {
+    //   let note = this.makeNote(ev)
+    //   let nameOct = note.nameOct;
+    //   let ch = ev.channel
+    //   this.$midiBus.$emit('noteinoff'+note.channel, note)
+    //   if (this.channels[ch] && this.channels[ch].notes && this.channels[ch].notes[nameOct]) {
+    //     this.$set(this.channels[ch].notes, nameOct, note)
+    //   }
+    //   this.$emit('update:channels', this.channels)
+    // },
     noteInOn(ev) {
-      this.inNote=ev;
-      let note = this.makeNote(ev)
-      note.number = this.mapNoteToRow(note.number, this.twelveToneRow); // Map the note
+      ev.note.number = this.mapNoteToRow(ev.note.number, this.twelveToneRow); // Map the note first
+      let note = this.makeNote(ev);
       console.log(note.number);
       this.$midiBus.$emit('noteinon' + note.channel, note);
       this.checkChannel(ev.channel);
-      this.$set(this.channels[ev.channel].notes, note.nameOct, note)
-      this.$emit('update:channels', this.channels)
+      this.$set(this.channels[ev.channel].notes, note.nameOct, note);
+      this.$emit('update:channels', this.channels);
     },
+
     noteInOff(ev) {
-      let note = this.makeNote(ev)
+      ev.note.number = this.mapNoteToRow(ev.note.number, this.twelveToneRow); // Map the note first
+      let note = this.makeNote(ev);
       let nameOct = note.nameOct;
-      let ch = ev.channel
-      this.$midiBus.$emit('noteinoff'+note.channel, note)
+      let ch = ev.channel;
+      this.$midiBus.$emit('noteinoff' + note.channel, note);
       if (this.channels[ch] && this.channels[ch].notes && this.channels[ch].notes[nameOct]) {
-        this.$set(this.channels[ch].notes, nameOct, note)
+        this.$set(this.channels[ch].notes, nameOct, note);
       }
-      this.$emit('update:channels', this.channels)
+      this.$emit('update:channels', this.channels);
     },
+
     ccInChange(ev) {
       this.inCc=ev;
       this.$midiBus.$emit(ev.channel+'cc'+ev.controller.number,ev.value)
