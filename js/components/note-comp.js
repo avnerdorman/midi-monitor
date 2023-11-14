@@ -29,8 +29,8 @@ export default {
       note.velocity=100;
       this.$emit('update:active', true)
       WebMidi.outputs.forEach(output => {
-        output.playNote(note.nameOct, note.channel);
         console.log('play', note.nameOct, note.channel);
+        output.playNote(note.nameOct, note.channel)
       })
     },
     stop(note,off) {
@@ -39,8 +39,8 @@ export default {
         note.velocity=0;
         if (!off)  this.$emit('update:active', false)
         WebMidi.outputs.forEach(output => {
-          output.stopNote(note.nameOct, note.channel);
           console.log('stop', note.nameOct, note.channel);
+          output.stopNote(note.nameOct, note.channel)
         })
       }
     },
