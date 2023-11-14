@@ -61,7 +61,7 @@ export default {
         outputs:WebMidi.outputs
       },
       activeOutputs:{},
-      selected: WebMidi.inputs[0] || null
+      selected: WebMidi.inputs[0] || null,
       twelveToneRow: [2, 0, 3, 7, 1, 8, 9, 11, 10, 6, 4, 5], // Default row
     }
   },
