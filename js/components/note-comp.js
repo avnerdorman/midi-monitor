@@ -25,22 +25,24 @@ export default {
   },
   methods: {
     play(note) {
+      console.log('Entering play method', note);
       this.pressed=true;
       note.velocity=100;
       this.$emit('update:active', true)
       WebMidi.outputs.forEach(output => {
         console.log('play', note.nameOct, note.channel);
-        output.playNote(note.nameOct, note.channel)
+        output.playNote(note.nameOct, note.channel);
       })
     },
-    stop(note,off) {
+    stop(note, off) {
+      console.log('Entering stop method', note, off);
       if (this.pressed) {
         this.pressed=false;
         note.velocity=0;
         if (!off)  this.$emit('update:active', false)
         WebMidi.outputs.forEach(output => {
           console.log('stop', note.nameOct, note.channel);
-          output.stopNote(note.nameOct, note.channel)
+          output.stopNote(note.nameOct, note.channel);
         })
       }
     },
