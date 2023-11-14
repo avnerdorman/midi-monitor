@@ -58,7 +58,7 @@ export default {
       midi: {
         supported:WebMidi.supported,
         inputs:WebMidi.inputs,
-        outputs:WebMidi.outputs
+        outputs:WebMidi.outputs 
       },
       activeOutputs:{},
       selected: WebMidi.inputs[0] || null,
@@ -119,7 +119,8 @@ export default {
       this.inNote=ev;
       let note = this.makeNote(ev)
       note.number = this.mapNoteToRow(note.number, this.twelveToneRow); // Map the note
-      this.$midiBus.$emit('noteinon'+note.channel,note);
+      console.log(note.number);
+      this.$midiBus.$emit('noteinon' + note.channel, note);
       this.checkChannel(ev.channel);
       this.$set(this.channels[ev.channel].notes, note.nameOct, note)
       this.$emit('update:channels', this.channels)
